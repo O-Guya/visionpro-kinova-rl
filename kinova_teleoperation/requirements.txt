@@ -1,0 +1,28 @@
+# Core dependencies
+numpy>=1.20.0
+scipy>=1.7.0
+h5py>=3.0.0
+PyYAML>=5.4.0
+
+# Gamepad input
+inputs>=0.5
+
+# ROS2 dependencies (install via apt)
+# sudo apt install ros-humble-rclpy
+# sudo apt install ros-humble-sensor-msgs
+# sudo apt install ros-humble-trajectory-msgs
+# sudo apt install ros-humble-control-msgs
+
+# Kinematics dependencies (install via apt)
+# sudo apt install python3-pykdl
+# pip install kdl_parser_py urdf_parser_py
+
+# Kinova kortex dependencies
+# sudo apt install ros-humble-kortex-bringup
+# sudo apt install ros-humble-kortex-description
+
+# Development dependencies (optional)
+# pytest>=6.0
+# pytest-cov>=2.12
+# black>=21.0
+# flake8>=3.9
