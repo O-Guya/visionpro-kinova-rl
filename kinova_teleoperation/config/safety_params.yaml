@@ -1,0 +1,22 @@
+# Safety Parameters for Kinova Gen3 Teleoperation
+# Run calibrate_table.py to set table_height_z automatically
+
+safety:
+  # Workspace limits (in robot base frame)
+  table_height_z: 0.0  # MUST BE CALIBRATED - run calibrate_table.py
+  z_safety_margin: 0.03  # meters - safety buffer above table
+  workspace_radius_xy: 0.6  # meters - cylindrical workspace radius
+  workspace_z_max: 1.0  # meters - maximum height from base
+
+  # Robot base position (in world frame)
+  robot_base_x: 0.0
+  robot_base_y: 0.0
+  robot_base_z: 0.0
+
+  # Watchdog thresholds
+  vision_latency_max: 0.2  # seconds - max Vision Pro data latency
+  ik_failure_threshold: 5  # consecutive IK failures before triggering
+  joint_error_max: 0.2  # radians - max joint tracking error (jam detection)
+
+  # Tracking confidence (not yet implemented)
+  tracking_confidence_min: "High"
