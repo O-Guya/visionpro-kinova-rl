@@ -61,6 +61,17 @@
           <param name="min">${-2*pi}</param>
           <param name="max">${2*pi}</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_1']}</param>
         </state_interface>
@@ -72,6 +83,17 @@
           <param name="min">-2.41</param>
           <param name="max">2.41</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_2']}</param>
         </state_interface>
@@ -83,6 +105,17 @@
           <param name="min">${-2*pi}</param>
           <param name="max">${2*pi}</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_3']}</param>
         </state_interface>
@@ -94,6 +127,17 @@
           <param name="min">-2.66</param>
           <param name="max">2.66</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_4']}</param>
         </state_interface>
@@ -105,6 +149,17 @@
           <param name="min">${-2*pi}</param>
           <param name="max">${2*pi}</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_5']}</param>
         </state_interface>
@@ -116,6 +171,17 @@
           <param name="min">-2.23</param>
           <param name="max">2.23</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_6']}</param>
         </state_interface>
@@ -127,6 +193,17 @@
           <param name="min">${-2*pi}</param>
           <param name="max">${2*pi}</param>
         </command_interface>
+        <!-- === 新增：速度指令接口 === -->
+        <!-- 这是为了给 cartesian_compliance_controller 使用 -->
+        <command_interface name="velocity">
+          <param name="min">-2.0</param> <!-- 数值根据实际限速调整，这里是安全估值 -->
+          <param name="max">2.0</param>
+        </command_interface>
+        
+        <!-- === 新增：力矩指令接口 === -->
+        <!-- 预留给未来可能的高级控制 -->
+        <command_interface name="effort"/>
+        
         <state_interface name="position">
           <param name="initial_value">${initial_positions['joint_7']}</param>
         </state_interface>

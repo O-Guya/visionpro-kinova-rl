@@ -1,0 +1,56 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # 1kHz 控制频率，对 RL 很重要
+
+    # 原有的控制器（保持不动）
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    # === 我们新增的柔顺控制器 ===
+    # 名字叫 my_compliance_controller
+    my_compliance_controller:
+      type: cartesian_compliance_controller/CartesianComplianceController
+
+# === 下面是控制器的具体参数 ===
+my_compliance_controller:
+  ros__parameters:
+    # 1. 核心坐标系设置 (根据你的 URDF 修改)
+    end_effector_link: "gen3_end_effector_link"  # <--- 就是你刚才找到的那个！
+    robot_base_link: "base_link"                 # 注意：如果你的基座叫 gen3_base_link，这里也要改！
+    ft_sensor_ref_link: "gen3_end_effector_link" # 力传感器参考系，通常和末端一致
+    compliance_ref_link: "gen3_end_effector_link" # 柔顺参考系
+
+    # 2. 关节名称匹配 (非常关键！)
+    # 警告：请回忆你的 launch file 是否加了 prefix="gen3_"？
+    # 如果加了，下面的关节名必须是 gen3_joint_1。如果不确定，先写带前缀的。
+    joints:
+      - joint_1  # 也有可能是 gen3_joint_1，见下文“如何确认”
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+      - joint_7
+
+    # 3. 刚度设置 (Stiffness)
+    # 这决定了机械臂有多“硬”。RL 训练初期可以软一点。
+    stiffness:
+        trans_x: 500.0
+        trans_y: 500.0
+        trans_z: 500.0
+        rot_x: 20.0
+        rot_y: 20.0
+        rot_z: 20.0
+
+    # 4. 求解器设置
+    solver:
+        error_scale: 1.0
+        resolution: 0.05
+        iterations: 10
+
+    # 5. 指令接口 (必须我们在 Xacro 里加过的)
+    command_interfaces:
+      - velocity
