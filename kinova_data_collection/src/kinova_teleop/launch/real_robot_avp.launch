@@ -1,0 +1,29 @@
+<launch>
+  <arg name="robot_type" default="j2s7s300"/>
+
+  <include file="$(find kinova_bringup)/launch/kinova_robot.launch">
+    <arg name="kinova_robotType" value="$(arg robot_type)"/>
+  </include>
+
+  <node name="joint_state_relay" pkg="topic_tools" type="relay" 
+        args="/j2s7s300_driver/out/joint_state /joint_states" />
+
+  <node name="joint_trajectory_action_server" pkg="kinova_driver" type="joint_trajectory_action_server" 
+        output="screen" respawn="false" args="$(arg robot_type)"/>
+
+  <node name="gripper_command_action_server" pkg="kinova_driver" type="gripper_command_action_server" 
+        output="screen" respawn="false" args="$(arg robot_type)"/>
+
+  <include file="$(find j2s7s300_moveit_config)/launch/move_group_j2s7s300.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="info" value="true"/>
+  </include>
+
+  <node name="rviz" pkg="rviz" type="rviz" 
+        args="-d $(find kinova_teleop)/launch/avp_kinova.rviz" 
+        output="screen">
+    <rosparam command="load" file="$(find j2s7s300_moveit_config)/config/kinematics.yaml"/>
+  </node>
+
+</launch>

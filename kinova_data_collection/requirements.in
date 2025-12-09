@@ -1,0 +1,11 @@
+empy==3.3.4
+catkin_pkg
+rospkg
+distro
+PyYAML
+defusedxml
+avp_stream
+scipy
+pykinect_azure
+h5py
+mcap-ros1-support 

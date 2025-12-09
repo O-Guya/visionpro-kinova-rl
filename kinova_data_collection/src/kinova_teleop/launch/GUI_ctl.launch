@@ -1,0 +1,31 @@
+<launch>
+  <!-- 定义参数 robot_type，默认值为 j2s7s300 -->
+  <arg name="robot_type" default="j2s7s300"/>
+
+  <!-- 启动 Kinova 官方 bringup 启动文件，初始化机器人硬件驱动 -->
+  <include file="$(find kinova_bringup)/launch/kinova_robot.launch">
+    <!-- 将 robot_type 传递给 kinova_robot.launch，指定机器人型号 -->
+    <arg name="kinova_robotType" value="$(arg robot_type)"/>
+  </include>
+
+  <!-- 将 Kinova 驱动发布的 /out/joint_state 转发为标准 /joint_states -->
+  <node name="joint_state_relay" pkg="topic_tools" type="relay" 
+        args="/j2s7s300_driver/out/joint_state /joint_states" />
+
+  <!-- 启动关节轨迹 Action Server，使 MoveIt 能通过 action 控制机械臂关节 -->
+  <node name="joint_trajectory_action_server" pkg="kinova_driver" type="joint_trajectory_action_server" 
+        output="screen" respawn="false" args="$(arg robot_type)"/>
+
+  <!-- 启动手爪控制 Action Server，使 MoveIt 能通过 action 控制手爪开合 -->
+  <node name="gripper_command_action_server" pkg="kinova_driver" type="gripper_command_action_server" 
+        output="screen" respawn="false" args="$(arg robot_type)"/>
+
+  <!-- 启动 MoveIt move_group 节点，提供运动规划和执行接口 -->
+  <include file="$(find j2s7s300_moveit_config)/launch/move_group_j2s7s300.launch"/>
+
+  <!-- 启动 MoveIt RViz 可视化界面，并加载 motion planning 配置 -->
+  <include file="$(find j2s7s300_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+  </include>
+
+</launch>

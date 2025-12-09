@@ -1,0 +1,34 @@
+# 机器人配置
+robots:
+  - name: "kinova_gen2"
+    type: "avp"
+
+# 采集参数
+frequency: 25 # 帧数
+episode_length_limit: 1000 # 最大帧数保护
+
+# 选项: "hdf5" (推荐用于直接训练) 或 "mcap" (推荐用于可视化/大规模采集)
+save_format: "mcap" 
+save_dir: "data_collected/test"
+
+# 机械臂参数 (Action/Qpos 维度)
+dims:
+  action: 8
+  qpos: 8
+
+cameras:
+  - name: "cam_wrist"
+    type: "opencv"
+    id: "pci-0000:07:00.4-usb-0:2.2.3:1.0"
+    width: 640
+    height: 480
+    fps: 25
+  
+  - name: "cam_fixed"
+    type: "kinect"
+    id: "0"
+    width: 640
+    height: 480
+    fps: 30
+    use_depth: true
+    depth_mode: "NFOV_UNBINNED" # NFOV_UNBINNED (窄角) 或 WFOV_2X2BINNED (广角)

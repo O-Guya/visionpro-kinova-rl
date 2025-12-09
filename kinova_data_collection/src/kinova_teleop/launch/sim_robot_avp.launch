@@ -1,0 +1,42 @@
+<launch>
+  <!-- 机器人型号参数，默认使用 j2s7s300（Kinova Gen3 7DoF + 三指手） -->
+  <arg name="robot_type" default="j2s7s300"/>
+
+  <!-- 加载 MoveIt 的规划场景与机器人描述（URDF / SRDF） -->
+  <include file="$(find j2s7s300_moveit_config)/launch/planning_context.launch">
+    <!-- 确保在此文件中加载 robot_description -->
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <!-- 发布关节状态的节点，用于提供 fake 控制器的关节状态 -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <!-- 不使用 GUI 版本的 slider 调节关节角度 -->
+    <param name="use_gui" value="false"/>
+
+    <!-- 从 MoveIt 的 fake controller 发布的 joint_states 读取数据 -->
+    <rosparam param="source_list">[/move_group/fake_controller_joint_states]</rosparam>
+  </node>
+
+  <!-- 根据关节状态发布 TF（机器人各连杆之间的变换） -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+  <!-- 启动 MoveIt 的 move_group 节点，包含规划与（这里为 fake）执行 -->
+  <include file="$(find j2s7s300_moveit_config)/launch/move_group_j2s7s300.launch">
+    <!-- 允许执行轨迹 -->
+    <arg name="allow_trajectory_execution" value="true"/>
+
+    <!-- 使用 fake execution，不连接真实硬件 -->
+    <arg name="fake_execution" value="true"/>
+
+    <!-- 输出更多调试信息 -->
+    <arg name="info" value="true"/>
+  </include>
+
+  <!-- 启动 Rviz，并加载 MoveIt 配置（即 MoveIt RViz plugin） -->
+  <node name="rviz" pkg="rviz" type="rviz" 
+        args="-d $(find kinova_teleop)/launch/avp_kinova.rviz" 
+        output="screen">
+    <rosparam command="load" file="$(find j2s7s300_moveit_config)/config/kinematics.yaml"/>
+  </node>
+
+</launch>

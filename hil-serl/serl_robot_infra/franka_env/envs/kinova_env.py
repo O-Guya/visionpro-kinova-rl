@@ -43,6 +43,14 @@ class KinovaBridge(Node):
             '/robotiq_2f_85_gripper_controller/gripper_cmd' # 需用 ros2 action list 确认
         )
 
+        self.latest_wrench = None
+        self.wrench_sub = self.create_subscription(
+            WrenchStamped, 
+            '/estimated_wrench', 
+            self.wrench_cb, 
+            10
+        )
+
         # --- C. 状态监听 (TF + Joints) ---
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
@@ -56,6 +64,8 @@ class KinovaBridge(Node):
         self._spin_thread = threading.Thread(target=self._spin, daemon=True)
         self._spin_thread.start()
         self.get_logger().info("Kinova Bridge Started!")
+
+
 
     def _spin(self):
         rclpy.spin(self)
@@ -103,6 +113,16 @@ class KinovaBridge(Node):
         # 但 RL 训练中通常希望 step 尽快返回，所以这里 fire-and-forget 也是一种选择
         # 为了严谨，建议加个微小的 sleep 在 env 里
 
+    def wrench_cb(self, msg):
+        self.latest_wrench = msg
+
+    def get_current_wrench(self):
+        if self.latest_wrench:
+            f = self.latest_wrench.wrench.force
+            t = self.latest_wrench.wrench.torque
+            return np.array([f.x, f.y, f.z]), np.array([t.x, t.y, t.z])
+        else:
+            return np.zeros(3), np.zeros(3)
 # =============================================================================
 # 2. Kinova 环境类 (继承 Gym)
 # =============================================================================
@@ -197,10 +217,8 @@ class KinovaEnv(gym.Env):
         # 简化：暂时设为 0，因为 Impedance Control 主要看位置
         self.currvel = np.zeros(6) 
         
-        # 3. 读力/力矩 (⚠️ 重点：此处填0，避免维度报错)
-        # 因为 Kinova 没有直接的 Cartesian Wrench 反馈给 Python (除非你写 Subscriber)
-        self.currforce = np.zeros(3)
-        self.currtorque = np.zeros(3)
+        # 3. 读力/力矩 
+        self.currforce, self.currtorque = self.bridge.get_current_wrench()
         
         # 4. 读夹爪位置 (这里简化，假设指令即位置)
         self.curr_gripper_pos = np.array([0.0]) 
